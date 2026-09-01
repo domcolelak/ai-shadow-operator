@@ -1,0 +1,79 @@
+:root {
+  --bg: #0d1117;
+  --panel: #151b23;
+  --border: #262f3b;
+  --text: #e6edf3;
+  --muted: #8b98a9;
+  --accent: #4b9fff;
+  --danger: #e0574f;
+  --ok: #3fae7a;
+}
+
+body {
+  width: 340px;
+  margin: 0;
+  padding: 12px;
+  background: var(--bg);
+  color: var(--text);
+  font: 14px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+body.wide { width: 560px; padding: 24px; }
+
+header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+
+.brand-mark {
+  width: 12px; height: 12px; border-radius: 4px;
+  background: linear-gradient(135deg, var(--accent), var(--ok));
+}
+
+h2 { font-size: 12px; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); margin: 0 0 8px; }
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 10px;
+}
+
+ul { margin: 0; padding-left: 16px; }
+li { margin-bottom: 4px; font-size: 13px; }
+
+.never { color: var(--ok); font-weight: 600; }
+.muted { color: var(--muted); font-size: 13px; }
+.error { color: var(--danger); font-size: 13px; }
+
+.recording { color: var(--danger); font-weight: 600; }
+.dot {
+  display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+  background: var(--danger); margin-right: 6px;
+  animation: pulse 1.6s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100% { opacity: 1 } 50% { opacity: .35 } }
+
+.counts { display: flex; gap: 16px; margin-top: 8px; }
+.count-value { font-size: 20px; font-weight: 650; }
+.count-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+
+footer { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+
+button.primary {
+  background: var(--accent); color: #08101c; border: 0; border-radius: 8px;
+  padding: 9px 16px; font: 600 14px system-ui, sans-serif; cursor: pointer;
+}
+button.primary.stop { background: var(--danger); color: #fff; }
+button.primary:disabled { background: var(--border); color: var(--muted); cursor: not-allowed; }
+
+a { color: var(--muted); font-size: 13px; }
+
+label { display: block; font-size: 12px; color: var(--muted); margin: 10px 0 4px; }
+input {
+  width: 100%; box-sizing: border-box; background: #1c232d; color: var(--text);
+  border: 1px solid var(--border); border-radius: 7px; padding: 8px 10px; font: 14px system-ui, sans-serif;
+}
+
+.pill {
+  display: inline-block; background: #1c232d; border: 1px solid var(--border);
+  border-radius: 6px; padding: 2px 8px; font-size: 12px; color: var(--muted); margin: 0 4px 4px 0;
+}

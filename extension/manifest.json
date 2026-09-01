@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "AI Shadow Operator (recorder)",
+  "version": "0.1.0",
+  "description": "Records browser sessions you explicitly start, on origins you allowlist. Never captures passwords, keystrokes or screenshots.",
+  "permissions": ["storage", "tabs", "scripting"],
+  "host_permissions": ["http://*/*", "https://*/*"],
+  "background": { "service_worker": "src/background.js", "type": "module" },
+  "action": { "default_popup": "src/popup.html", "default_title": "Shadow Operator" },
+  "options_page": "src/options.html",
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["src/content.js"],
+      "css": ["src/indicator.css"],
+      "run_at": "document_idle",
+      "all_frames": false
+    }
+  ],
+  "icons": {}
+}

@@ -1,0 +1,43 @@
+<!doctype html>
+<meta charset="utf-8" />
+<title>Shadow Operator</title>
+<link rel="stylesheet" href="ui.css" />
+<body>
+  <header>
+    <span class="brand-mark" aria-hidden="true"></span>
+    <strong>Shadow Operator</strong>
+  </header>
+
+  <section id="status" class="panel">
+    <p class="muted">Checking…</p>
+  </section>
+
+  <section class="panel" id="guarantees">
+    <h2>While recording</h2>
+    <ul>
+      <li><span class="never">never</span> passwords, card or one-time-code fields</li>
+      <li><span class="never">never</span> keystrokes — no key listener is attached</li>
+      <li><span class="never">never</span> screenshots</li>
+      <li><span class="never">never</span> query strings from URLs</li>
+      <li>only origins your workspace allowlists</li>
+    </ul>
+  </section>
+
+  <section class="panel" id="origins" hidden>
+    <h2>Recorded on</h2>
+    <p id="origin-list" class="muted"></p>
+  </section>
+
+  <section class="panel" id="refusals" hidden>
+    <h2>Refused, not stored</h2>
+    <ul id="refusal-list"></ul>
+  </section>
+
+  <footer>
+    <button id="toggle" class="primary">Start recording</button>
+    <a href="#" id="options">Settings</a>
+  </footer>
+
+  <p id="error" class="error" hidden></p>
+  <script type="module" src="popup.js"></script>
+</body>

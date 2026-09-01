@@ -1,0 +1,35 @@
+<!doctype html>
+<meta charset="utf-8" />
+<title>Shadow Operator — settings</title>
+<link rel="stylesheet" href="ui.css" />
+<body class="wide">
+  <header>
+    <span class="brand-mark" aria-hidden="true"></span>
+    <strong>Shadow Operator</strong>
+  </header>
+
+  <section class="panel">
+    <h2>Workspace</h2>
+    <label for="apiBase">API address</label>
+    <input id="apiBase" type="text" placeholder="http://localhost:8000" />
+
+    <label for="apiKey">Workspace key</label>
+    <input id="apiKey" type="password" placeholder="pk_…" autocomplete="off" />
+
+    <p class="muted">
+      The key is stored in this browser's extension storage and sent only to the address
+      above. What may be recorded is decided by the workspace, not here — this extension
+      fetches that policy and enforces it before anything is transmitted.
+    </p>
+
+    <button id="save" class="primary">Save</button>
+    <span id="saved" class="muted" hidden>Saved.</span>
+  </section>
+
+  <section class="panel" id="policy" hidden>
+    <h2>What this workspace records</h2>
+    <div id="policy-body"></div>
+  </section>
+
+  <script type="module" src="options.js"></script>
+</body>

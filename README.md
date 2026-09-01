@@ -30,6 +30,8 @@ a language model asserted.
 
 ## What it does
 
+0. **Records** through a browser extension that enforces the consent boundary before
+   anything is transmitted — see [`extension/`](extension/).
 1. **Captures** semantic actions — role and accessible name, never CSS paths — filtered
    through the consent policy on arrival.
 2. **Segments** sessions into task-shaped runs, drops noise, and fingerprints each run.
@@ -66,12 +68,23 @@ cd frontend && npm install && npm run dev
 ## Tests
 
 ```bash
-cd backend && python -m pytest -q
+cd backend && python -m pytest -q      # 145 tests
+cd extension && node --test test/      # 46 tests, no dependencies
 ```
 
-145 tests. The privacy guarantees are written as assertions about what must **not**
-exist in stored data, and the execution tests assert not only what the engine returned
-but what it actually did — including that a dry run did nothing at all.
+The privacy guarantees are written as assertions about what must **not** exist in stored
+data, and the execution tests assert not only what the engine returned but what it
+actually did — including that a dry run did nothing at all.
+
+The extension also has an end-to-end check against a running backend:
+
+```bash
+cd extension && node test/e2e.mjs http://localhost:8000
+```
+
+Unit tests prove the extension does not *send* a password; this drives the real path and
+then searches the stored sessions for the secret, proving the backend did not *receive*
+one.
 
 ## The execution DSL
 
@@ -146,8 +159,8 @@ trail can then be kept indefinitely without becoming a data liability.
   do cover, in full, is the engine — approval gates, origin enforcement, dry-run
   isolation, sanitised logging — against an in-process fake portal that records every
   mutating call.
-- **No browser extension.** The capture *model* and its API are complete and tested; the
-  extension that would feed them is not built.
+- **The browser extension is unpacked-only.** It is built and tested (`extension/`), but
+  there is no store listing, it records only the top frame, and it ships without icons.
 - **No isolated executor container.** The Dockerfile runs the API; a production deployment
   would run the Playwright driver in a separate sandboxed container.
 - **No client-side data-fetching library.** App Router server components fetch directly,
@@ -168,6 +181,10 @@ backend/app/
   demo/          30 synthetic sessions with planted patterns and planted violations
 frontend/
   app/           Next.js App Router pages (server components)
+extension/
+  src/capture.js pure, tested filtering: allowlist, sensitivity, redaction, queue
+  src/content.js DOM listeners and the always-visible recording indicator
+  src/background.js  session lifecycle and batched transmission
 ```
 
 ## The demo data
@@ -195,6 +212,7 @@ cannot start a recording at all.
 
 ## What is not built
 
-No browser extension or desktop companion. No background job queue — discovery runs
-synchronously. No scheduled triggers. No connector implementations (the allowlist and
-the gating exist; the integrations do not). No RBAC beyond a per-tenant key.
+No desktop companion — the extension covers browser work only. No background job queue;
+discovery runs synchronously. No scheduled triggers. No connector implementations (the
+allowlist and the gating exist; the integrations do not). No RBAC beyond a per-tenant
+key.
