@@ -11,7 +11,7 @@ import uuid
 from datetime import datetime, timezone
 from typing import Sequence
 
-from sqlalchemy import delete, select
+from sqlalchemy import delete, func, select
 from sqlalchemy.orm import Session
 
 from app.capture.model import (
@@ -170,12 +170,18 @@ def delete_session(db: Session, tenant_id: uuid.UUID, session_id: uuid.UUID) -> 
     if session is None:
         raise LookupError("session not found for this tenant")
 
-    removed = db.scalar(
-        select(RecordedAction).where(
+    # Counted with a query rather than len(session.actions): loading the
+    # collection makes the ORM cascade a second delete over rows the statement
+    # below already removed, which SQLAlchemy reports as a delete that matched
+    # nothing. The relationship is passive_deletes, so an unloaded collection
+    # leaves the removal to the statement and the foreign key.
+    count = db.scalar(
+        select(func.count())
+        .select_from(RecordedAction)
+        .where(
             RecordedAction.tenant_id == tenant_id, RecordedAction.session_id == session_id
         )
     )
-    count = len(session.actions)
     db.execute(
         delete(RecordedAction).where(
             RecordedAction.tenant_id == tenant_id, RecordedAction.session_id == session_id
@@ -183,7 +189,7 @@ def delete_session(db: Session, tenant_id: uuid.UUID, session_id: uuid.UUID) -> 
     )
     db.delete(session)
     db.flush()
-    return count
+    return int(count or 0)
 
 
 def run_discovery(
